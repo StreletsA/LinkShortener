@@ -1,8 +1,6 @@
 package com.StreletsA.linkshortener.service;
 
-import com.StreletsA.linkshortener.data.LinkInformation;
 import com.StreletsA.linkshortener.entity.LinkInfo;
-import com.StreletsA.linkshortener.exception.LinkNotFoundException;
 import com.StreletsA.linkshortener.repository.LinkInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,33 +13,24 @@ import java.util.List;
 public class LinkInfoService {
 
     final LinkInfoRepository linkInfoRepository;
-
-    private String host;
+    
     private int nextLinkNumber;
 
-    public LinkInfoService(@Value("${shortener.baselink}") String host, @Autowired LinkInfoRepository linkInfoRepository){
-
-        this.host = host;
+    public LinkInfoService(@Autowired LinkInfoRepository linkInfoRepository){
         nextLinkNumber = 1;
 
         this.linkInfoRepository = linkInfoRepository;
     }
 
-    public List getLinkInfo() {
-        List linkInfoList = new ArrayList();
-        linkInfoRepository.findAll().forEach(person -> linkInfoList.add(person));
-        return linkInfoList;
-    }
-
     public LinkInfo getLinkInfoByShortLink(String shortLink) {
-        return (LinkInfo) linkInfoRepository.findById(shortLink).get();
+        return linkInfoRepository.findById(shortLink).get();
     }
 
     public LinkInfo addLinkInfo(String normalLink){
 
         LinkInfo linkInfo = new LinkInfo();
         linkInfo.setShortLink(makeShortLink(nextLinkNumber));
-        linkInfo.setNormalLink(validateLink(normalLink));
+        linkInfo.setNormalLink(normalLink);
         linkInfo.setVisits(0);
 
         nextLinkNumber++;
@@ -51,8 +40,12 @@ public class LinkInfoService {
         return linkInfo;
     }
 
-    public void getAllLinks(){
-
+    public List<LinkInfo> getAllLinks(){
+    	List<LinkInfo> links = new ArrayList<>();
+    	
+    	linkInfoRepository.findAll().forEach(linkInfo -> links.add(linkInfo));
+    	
+    	return links;
     }
 
     public void saveOrUpdate(LinkInfo linkInfo) {
@@ -65,7 +58,7 @@ public class LinkInfoService {
 
     public String makeShortLink(int linkNumber){
 
-        String shortLink = "";
+        String shortLink = "/l/";
 
         while(linkNumber > 0){
 
@@ -81,17 +74,7 @@ public class LinkInfoService {
             break;
         }
 
-        return host + shortLink;
-
-    }
-
-    private String validateLink(String link){
-
-        if (!link.startsWith("http")){
-            link = "http://" + link;
-        }
-
-        return link;
+        return shortLink;
 
     }
 

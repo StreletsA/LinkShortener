@@ -1,6 +1,5 @@
 package com.StreletsA.linkshortener.controller;
 
-import com.StreletsA.linkshortener.data.LinkDao;
 import com.StreletsA.linkshortener.exception.LinkNotFoundException;
 import com.StreletsA.linkshortener.service.LinkInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/l/")
 public class RedirectorController {
 
     private final LinkInfoService linkInfoService;
@@ -28,7 +27,7 @@ public class RedirectorController {
     @GetMapping("/{postfix}")
     public ModelAndView redirectToNormalLink(@PathVariable String postfix) throws LinkNotFoundException {
         return new ModelAndView("redirect:" +
-                linkInfoService.getLinkInfoByShortLink(host + postfix).getNormalLink());
+                linkInfoService.getLinkInfoByShortLink("/l/" + postfix).getOriginalLink());
     }
 
 }

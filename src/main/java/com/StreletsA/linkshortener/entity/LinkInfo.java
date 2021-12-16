@@ -8,15 +8,15 @@ public class LinkInfo {
 
     @Id
     private String shortLink;
-    private String normalLink;
+    private String originalLink;
     private int visits;
 
     public void setShortLink(String shortLink) {
         this.shortLink = shortLink;
     }
 
-    public void setNormalLink(String normalLink) {
-        this.normalLink = normalLink;
+    public void setNormalLink(String originalLink) {
+        this.originalLink = originalLink;
     }
 
     public void setVisits(int visits) {
@@ -27,8 +27,8 @@ public class LinkInfo {
         return shortLink;
     }
 
-    public String getNormalLink() {
-        return normalLink;
+    public String getOriginalLink() {
+        return originalLink;
     }
 
     public int getVisits() {
