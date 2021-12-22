@@ -15,7 +15,7 @@ public class LinkInfo {
         this.shortLink = shortLink;
     }
 
-    public void setNormalLink(String originalLink) {
+    public void setOriginalLink(String originalLink) {
         this.originalLink = originalLink;
     }
 
@@ -33,5 +33,9 @@ public class LinkInfo {
 
     public int getVisits() {
         return visits;
+    }
+    
+    public void visit() {
+    	visits++;
     }
 }

@@ -26,6 +26,7 @@ public class RedirectorController {
 
     @GetMapping("/{postfix}")
     public ModelAndView redirectToNormalLink(@PathVariable String postfix) throws LinkNotFoundException {
+    	linkInfoService.visitLink(postfix);
         return new ModelAndView("redirect:" +
                 linkInfoService.getLinkInfoByShortLink("/l/" + postfix).getOriginalLink());
     }

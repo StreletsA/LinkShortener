@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LinkInfoRepository extends CrudRepository<LinkInfo, String> {
+	LinkInfo findByOriginalLink(String originalLink);
 }

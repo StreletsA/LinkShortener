@@ -2,12 +2,20 @@ package com.StreletsA.linkshortener.service;
 
 import com.StreletsA.linkshortener.entity.LinkInfo;
 import com.StreletsA.linkshortener.repository.LinkInfoRepository;
+
+import org.hibernate.query.criteria.internal.predicate.InPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class LinkInfoService {
@@ -25,12 +33,16 @@ public class LinkInfoService {
     public LinkInfo getLinkInfoByShortLink(String shortLink) {
         return linkInfoRepository.findById(shortLink).get();
     }
+    
+    public LinkInfo getLinkInfoByPostfix(String postfix) {
+        return getLinkInfoByShortLink("/l/" + postfix);
+    }
 
-    public LinkInfo addLinkInfo(String normalLink){
+    public LinkInfo addLinkInfo(String originalLink){
 
         LinkInfo linkInfo = new LinkInfo();
         linkInfo.setShortLink(makeShortLink(nextLinkNumber));
-        linkInfo.setNormalLink(normalLink);
+        linkInfo.setOriginalLink(originalLink);
         linkInfo.setVisits(0);
 
         nextLinkNumber++;
@@ -76,6 +88,22 @@ public class LinkInfoService {
 
         return shortLink;
 
+    }
+    
+    public LinkInfo getLinkInfoByOriginallLink(String original) {
+    	return linkInfoRepository.findByOriginalLink(original);
+    }
+    
+    public long getRankOfLink(LinkInfo linkInfo) {
+    	List<LinkInfo> allLinkInfos = getAllLinks();
+    	Collections.sort(allLinkInfos, Comparator.comparing(li -> li.getVisits()));
+    	return allLinkInfos.indexOf(linkInfo) + 1;
+    }
+    
+    public void visitLink(String postfix) {
+    	LinkInfo visited = linkInfoRepository.findById("/l/" + postfix).get();
+    	visited.visit();
+    	saveOrUpdate(visited);
     }
 
 }
