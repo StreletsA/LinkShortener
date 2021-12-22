@@ -1,0 +1,12 @@
+com\StreletsA\linkshortener\controller\RedirectorController.class
+com\StreletsA\linkshortener\repository\LinkInfoRepository.class
+com\StreletsA\linkshortener\response\LinkResponse.class
+com\StreletsA\linkshortener\response\AllLinkResponse.class
+com\StreletsA\linkshortener\Application.class
+com\StreletsA\linkshortener\core\OriginalLink.class
+com\StreletsA\linkshortener\service\LinkInfoService.class
+com\StreletsA\linkshortener\response\StatsResponse.class
+com\StreletsA\linkshortener\exception\LinkNotFoundException.class
+com\StreletsA\linkshortener\controller\StatisticController.class
+com\StreletsA\linkshortener\controller\ShortenerController.class
+com\StreletsA\linkshortener\entity\LinkInfo.class
